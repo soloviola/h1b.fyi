@@ -42,7 +42,7 @@ class App extends Component {
           onChange={this.onNameSearchChange}
         />
         {this.state.searchResult.map((item, key) => <li key={item[0]}>
-          {item[COLUMN_INDEX['JOB_TITLE']]} | {item[COLUMN_INDEX['EMPLOYER_NAME']]} | {item[COLUMN_INDEX['PREVAILING_WAGE_1']]}  </li>)}
+          {item[COLUMN_INDEX['JOB_TITLE']]} | {item[COLUMN_INDEX['EMPLOYER_NAME']]} | {item[COLUMN_INDEX['PREVAILING_WAGE_1']]} | {item[COLUMN_INDEX['PW_UNIT_OF_PAY_1']] || "Year"}  </li>)}
       </div>
     );
   }
