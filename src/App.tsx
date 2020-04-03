@@ -1,7 +1,7 @@
 import React, { Component, ChangeEvent } from 'react';
 import './App.css';
 import Grid from '@material-ui/core/Grid';
-import Autocomplete, { RenderGroupParams } from '@material-ui/lab/Autocomplete';
+import Autocomplete from './autocomplete';
 import TextField from '@material-ui/core/TextField';
 import H1bTable from './h1bTable';
 import ListSubheader from '@material-ui/core/ListSubheader';
@@ -35,7 +35,6 @@ class App extends Component {
   }
 
   onNameSearchChange = (event: ChangeEvent<{}>, val: any) => {
-    console.log(val)
     if (!val) {
       return this.setState({ searchResult: [] })
     }
@@ -55,24 +54,8 @@ class App extends Component {
           </Grid>
           <Grid item xs={10}>
             <Autocomplete 
-              id="company-name-box"
-              size="small"
-              openOnFocus
-              style={{ width: 300 }}
-              disableListWrap
-              ListboxComponent={ListboxComponent as React.ComponentType<React.HTMLAttributes<HTMLElement>>}
-              renderGroup={(params: RenderGroupParams) => [
-                <ListSubheader key={params.key} component="div">
-                  {params.key}
-                </ListSubheader>,
-                params.children,
-              ]}
-              options={this.state.companyNames}
-              groupBy={(option) => option[0].toUpperCase()}
-              getOptionLabel={option => option}
-              renderInput={(params) => <TextField {...params} label="Company Name" variant="outlined" />}
-              renderOption={(option) => <Typography noWrap>{option}</Typography>}
-              onChange={this.onNameSearchChange}
+              companyNames={this.state.companyNames}
+              onNameSearchChange={this.onNameSearchChange}
             />
             <H1bTable searchResult={this.state.searchResult} />
           </Grid>
