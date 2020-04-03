@@ -1,5 +1,6 @@
 import React, { Component, forwardRef } from 'react';
 import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
 import { COLUMN_INDEX } from './Consts';
 import MaterialTable from 'material-table';
 
@@ -21,14 +22,9 @@ import ViewColumn from '@material-ui/icons/ViewColumn';
 
 import {
   createStyles,
-  lighten,
   makeStyles,
   Theme
 } from "@material-ui/core/styles";
-
-const LESS_ROWS = 10
-const MID_ROWS = 25
-const MORE_ROWS = 50
 
 const tableColumns = [
   { field: "jobTitle", title: "Job Title" },
@@ -85,22 +81,26 @@ const H1bTable = (params: { searchResult: any[]; }) => {
       wage
     }
   })
+  const isVisible = params.searchResult.length === 0 ? "hidden": "visible"
   return (
-    <Paper className={classes.paper}>
-      <MaterialTable
-        icons={tableIcons}
-        title="Search Result"
-        columns={tableColumns}
-        data={formattedResult}
-        options={{
-          sorting: true, 
-          padding: 'dense',
-          pageSize: 10,
-          pageSizeOptions: [10, 20, 50],
-          paginationType: "normal"
-        }}
-      />
-    </Paper>
+    <Box visibility={isVisible}>
+      <Paper className={classes.paper}>
+        <MaterialTable
+          icons={tableIcons}
+          title="Search Result"
+          columns={tableColumns}
+          data={formattedResult}
+          options={{
+            sorting: true, 
+            filtering: true,
+            padding: 'dense',
+            pageSize: 10,
+            pageSizeOptions: [10, 20, 50],
+            paginationType: "normal"
+          }}
+        />
+      </Paper>
+    </Box>
   );
 }
 
