@@ -201,6 +201,7 @@ const H1bTable = (params: { searchResult: any[]; }) => {
       wage
     }
   })
+  
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, formattedResult.length - page * rowsPerPage);
 
