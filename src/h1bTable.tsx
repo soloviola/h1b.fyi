@@ -1,15 +1,24 @@
-import React, { Component } from 'react';
-import Box from '@material-ui/core/Box';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TablePagination from "@material-ui/core/TablePagination";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
+import React, { Component, forwardRef } from 'react';
 import Paper from '@material-ui/core/Paper';
 import { COLUMN_INDEX } from './Consts';
+import MaterialTable from 'material-table';
+
+import AddBox from '@material-ui/icons/AddBox';
+import ArrowDownward from '@material-ui/icons/ArrowDownward';
+import Check from '@material-ui/icons/Check';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
+import Clear from '@material-ui/icons/Clear';
+import DeleteOutline from '@material-ui/icons/DeleteOutline';
+import Edit from '@material-ui/icons/Edit';
+import FilterList from '@material-ui/icons/FilterList';
+import FirstPage from '@material-ui/icons/FirstPage';
+import LastPage from '@material-ui/icons/LastPage';
+import Remove from '@material-ui/icons/Remove';
+import SaveAlt from '@material-ui/icons/SaveAlt';
+import Search from '@material-ui/icons/Search';
+import ViewColumn from '@material-ui/icons/ViewColumn';
+
 import {
   createStyles,
   lighten,
@@ -21,160 +30,43 @@ const LESS_ROWS = 10
 const MID_ROWS = 25
 const MORE_ROWS = 50
 
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-type Order = 'asc' | 'desc';
-
-interface Data {
-  id: string;
-  jobTitle: string;
-  employerName: string;
-  wage: number;
-}
-
-function getComparator<Key extends keyof any>(
-  order: Order,
-  orderBy: Key,
-): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
-  const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
-
-interface HeadCell {
-  disablePadding: boolean;
-  id: keyof Data;
-  label: string;
-  numeric: boolean;
-}
-
-interface EnhancedTableProps {
-  classes: ReturnType<typeof useStyles>;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
-  order: Order;
-  orderBy: string;
-  rowCount: number;
-}
-
-const headCells: HeadCell[] = [
-  { id: "jobTitle", numeric: false, disablePadding: false, label: "Job Title" },
-  { id: "employerName", numeric: false, disablePadding: false, label: "Employer Name" },
-  { id: "wage", numeric: true, disablePadding: false, label: "Wage" },
+const tableColumns = [
+  { field: "jobTitle", title: "Job Title" },
+  { field: "employerName", title: "Employer Name" },
+  { field: "wage", title: "Wage" }
 ];
-
-function EnhancedTableHead(props: EnhancedTableProps) {
-  const { classes, order, orderBy, onRequestSort } = props;
-  const createSortHandler = (property: keyof Data) => (
-    event: React.MouseEvent<unknown>
-  ) => {
-    onRequestSort(event, property);
-  };
-
-  return (
-    <TableHead>
-      <TableRow>
-        {headCells.map(headCell => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "default"}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <span className={classes.visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </span>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      width: "100%"
-    },
     paper: {
       width: "100%",
       marginBottom: theme.spacing(2)
-    },
-    table: {
-      minWidth: 750
-    },
-    visuallyHidden: {
-      border: 0,
-      clip: "rect(0 0 0 0)",
-      height: 1,
-      margin: -1,
-      overflow: "hidden",
-      padding: 0,
-      position: "absolute",
-      top: 20,
-      width: 1
     }
   })
 );
 
+const tableIcons = {
+  Add: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <AddBox {...props} ref={ref} />),
+  Check: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <Check {...props} ref={ref} />),
+  Clear: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <Clear {...props} ref={ref} />),
+  Delete: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <DeleteOutline {...props} ref={ref} />),
+  DetailPanel: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <ChevronRight {...props} ref={ref} />),
+  Edit: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <Edit {...props} ref={ref} />),
+  Export: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <SaveAlt {...props} ref={ref} />),
+  Filter: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <FilterList {...props} ref={ref} />),
+  FirstPage: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <FirstPage {...props} ref={ref} />),
+  LastPage: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <LastPage {...props} ref={ref} />),
+  NextPage: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <ChevronRight {...props} ref={ref} />),
+  PreviousPage: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <ChevronLeft {...props} ref={ref} />),
+  ResetSearch: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <Clear {...props} ref={ref} />),
+  Search: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <Search {...props} ref={ref} />),
+  SortArrow: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <ArrowDownward {...props} ref={ref} />),
+  ThirdStateCheck: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <Remove {...props} ref={ref} />),
+  ViewColumn: forwardRef((props, ref:React.Ref<SVGSVGElement>) => <ViewColumn {...props} ref={ref} />)
+};
+
 const H1bTable = (params: { searchResult: any[]; }) => {
   const classes = useStyles();
-  const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("wage");
-  const [selected] = React.useState<string[]>([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(true);
-  const [rowsPerPage, setRowsPerPage] = React.useState(LESS_ROWS);
-
-  const handleRequestSort = (
-    event: React.MouseEvent<unknown>,
-    property: keyof Data
-  ) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
-  };
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, LESS_ROWS));
-    setPage(0);
-  };
-
-  const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDense(event.target.checked);
-  };
 
   const formattedResult = params.searchResult.map((item: any, key) => {
     let wage = 0
@@ -188,63 +80,26 @@ const H1bTable = (params: { searchResult: any[]; }) => {
       wage = item[COLUMN_INDEX['PREVAILING_WAGE_1']]
     }
     return {
-      id: key,
       jobTitle: item[COLUMN_INDEX["JOB_TITLE"]],
       employerName: item[COLUMN_INDEX['EMPLOYER_NAME']],
       wage
     }
   })
-  
-  const emptyRows =
-    rowsPerPage - Math.min(rowsPerPage, formattedResult.length - page * rowsPerPage);
-
   return (
     <Paper className={classes.paper}>
-      <TableContainer component={Paper}>
-        <Table size="small">
-          <colgroup>
-            <col width="50%" />
-            <col width="20%" />
-            <col width="30%" />
-          </colgroup>
-          <EnhancedTableHead
-            classes={classes}
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
-            rowCount={formattedResult.length}
-          />
-          <TableBody>
-            {stableSort(formattedResult, getComparator(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, _) => {
-                    return (
-                      <TableRow tabIndex={-1} key={row.id}>
-                        <TableCell component="th" scope="row" align="left"> {row.jobTitle} </TableCell>
-                        <TableCell align="left">{row.employerName}</TableCell>
-                        <TableCell align="right">{row.wage}</TableCell>
-                      </TableRow>
-                    );
-              })
-            }
-            {/* don't need this since we are not  */}
-            {/* {emptyRows > 0 && (
-              <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                <TableCell colSpan={6} />
-              </TableRow>
-            )} */}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {formattedResult.length > 0 && (<TablePagination
-        rowsPerPageOptions={[LESS_ROWS, MID_ROWS, MORE_ROWS]}
-        component="div"
-        count={formattedResult.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />)}
+      <MaterialTable
+        icons={tableIcons}
+        title="Search Result"
+        columns={tableColumns}
+        data={formattedResult}
+        options={{
+          sorting: true, 
+          padding: 'dense',
+          pageSize: 10,
+          pageSizeOptions: [10, 20, 50],
+          paginationType: "normal"
+        }}
+      />
     </Paper>
   );
 }
