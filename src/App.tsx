@@ -30,6 +30,7 @@ class App extends Component {
             return name[0]
         }).sort((a: string, b: string) => a.toUpperCase().localeCompare(b.toUpperCase()));
         this.setState({ companyNames })
+        console.log('mounted')
       });
   }
 
@@ -52,10 +53,11 @@ class App extends Component {
         <Grid container spacing={3}>
           <Grid item xs >
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={10}>
             <Autocomplete 
               id="company-name-box"
               size="small"
+              openOnFocus
               style={{ width: 300 }}
               disableListWrap
               ListboxComponent={ListboxComponent as React.ComponentType<React.HTMLAttributes<HTMLElement>>}
