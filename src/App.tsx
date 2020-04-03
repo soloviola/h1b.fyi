@@ -2,11 +2,7 @@ import React, { Component, ChangeEvent } from 'react';
 import './App.css';
 import Grid from '@material-ui/core/Grid';
 import Autocomplete from './autocomplete';
-import TextField from '@material-ui/core/TextField';
 import H1bTable from './h1bTable';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import ListboxComponent from './Listbox';
-import { Typography } from '@material-ui/core';
 
 class App extends Component {
   state = {

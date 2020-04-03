@@ -95,7 +95,7 @@ const H1bTable = (params: { searchResult: any[]; }) => {
             filtering: true,
             padding: 'dense',
             pageSize: 10,
-            pageSizeOptions: [10, 20, 50],
+            pageSizeOptions: [10, 20, 50, 100],
             paginationType: "normal"
           }}
         />
