@@ -184,11 +184,21 @@ const H1bTable = (params: { searchResult: any[]; }) => {
   };
 
   const formattedResult = params.searchResult.map((item: any, key) => {
+    let wage = 0
+    if (!!item[COLUMN_INDEX['WAGE_RATE_OF_PAY_TO_1']]) {
+      wage = item[COLUMN_INDEX['WAGE_RATE_OF_PAY_TO_1']]
+    }
+    else if (!!item[COLUMN_INDEX['WAGE_RATE_OF_PAY_FROM_1']]) {
+      wage = item[COLUMN_INDEX['WAGE_RATE_OF_PAY_FROM_1']]
+    }
+    else {
+      wage = item[COLUMN_INDEX['PREVAILING_WAGE_1']]
+    }
     return {
       id: key,
       jobTitle: item[COLUMN_INDEX["JOB_TITLE"]],
       employerName: item[COLUMN_INDEX['EMPLOYER_NAME']],
-      wage: item[COLUMN_INDEX['PREVAILING_WAGE_1']],
+      wage
     }
   })
   const emptyRows =
@@ -213,8 +223,6 @@ const H1bTable = (params: { searchResult: any[]; }) => {
           {stableSort(formattedResult, getComparator(order, orderBy))
                 // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
                   return (
                     <TableRow tabIndex={-1} key={row.id}>
                       <TableCell component="th" scope="row" align="left"> {row.jobTitle} </TableCell>
