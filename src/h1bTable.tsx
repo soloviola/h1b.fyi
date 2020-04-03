@@ -28,7 +28,7 @@ import {
 
 const tableColumns = [
   { field: "jobTitle", title: "Job Title" },
-  { field: "employerName", title: "Employer Name" },
+  { field: "employerName", title: "Company Name" },
   { field: "wage", title: "Wage" }
 ];
 
