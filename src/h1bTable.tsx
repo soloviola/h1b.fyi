@@ -17,6 +17,10 @@ import {
   Theme
 } from "@material-ui/core/styles";
 
+const LESS_ROWS = 10
+const MID_ROWS = 25
+const MORE_ROWS = 50
+
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -113,17 +117,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   );
 }
 
-// const handleChangePage = (event: unknown, newPage: number) => {
-//   setPage(newPage);
-// };
-
-// const handleChangeRowsPerPage = (
-//   event: React.ChangeEvent<HTMLInputElement>
-// ) => {
-//   setRowsPerPage(parseInt(event.target.value, 10));
-//   setPage(0);
-// };
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -156,8 +149,8 @@ const H1bTable = (params: { searchResult: any[]; }) => {
   const [orderBy, setOrderBy] = React.useState<keyof Data>("wage");
   const [selected] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [dense, setDense] = React.useState(true);
+  const [rowsPerPage, setRowsPerPage] = React.useState(LESS_ROWS);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -175,7 +168,7 @@ const H1bTable = (params: { searchResult: any[]; }) => {
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    setRowsPerPage(parseInt(event.target.value, LESS_ROWS));
     setPage(0);
   };
 
@@ -184,48 +177,75 @@ const H1bTable = (params: { searchResult: any[]; }) => {
   };
 
   const formattedResult = params.searchResult.map((item: any, key) => {
+    let wage = 0
+    if (!!item[COLUMN_INDEX['WAGE_RATE_OF_PAY_TO_1']]) {
+      wage = item[COLUMN_INDEX['WAGE_RATE_OF_PAY_TO_1']]
+    }
+    else if (!!item[COLUMN_INDEX['WAGE_RATE_OF_PAY_FROM_1']]) {
+      wage = item[COLUMN_INDEX['WAGE_RATE_OF_PAY_FROM_1']]
+    }
+    else {
+      wage = item[COLUMN_INDEX['PREVAILING_WAGE_1']]
+    }
     return {
       id: key,
       jobTitle: item[COLUMN_INDEX["JOB_TITLE"]],
       employerName: item[COLUMN_INDEX['EMPLOYER_NAME']],
-      wage: item[COLUMN_INDEX['PREVAILING_WAGE_1']],
+      wage
     }
   })
+  
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, formattedResult.length - page * rowsPerPage);
 
   return (
-    <TableContainer component={Paper}>
-      <Table size="small">
-        <colgroup>
-          <col width="50%" />
-          <col width="20%" />
-          <col width="30%" />
-        </colgroup>
-        <EnhancedTableHead
-          classes={classes}
-          order={order}
-          orderBy={orderBy}
-          onRequestSort={handleRequestSort}
-          rowCount={formattedResult.length}
-        />
-        <TableBody>
-          {stableSort(formattedResult, getComparator(order, orderBy))
-                // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
-                  return (
-                    <TableRow tabIndex={-1} key={row.id}>
-                      <TableCell component="th" scope="row" align="left"> {row.jobTitle} </TableCell>
-                      <TableCell align="left">{row.employerName}</TableCell>
-                      <TableCell align="right">{row.wage}</TableCell>
-                    </TableRow>
-                  );
-            })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Paper className={classes.paper}>
+      <TableContainer component={Paper}>
+        <Table size="small">
+          <colgroup>
+            <col width="50%" />
+            <col width="20%" />
+            <col width="30%" />
+          </colgroup>
+          <EnhancedTableHead
+            classes={classes}
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleRequestSort}
+            rowCount={formattedResult.length}
+          />
+          <TableBody>
+            {stableSort(formattedResult, getComparator(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, _) => {
+                    return (
+                      <TableRow tabIndex={-1} key={row.id}>
+                        <TableCell component="th" scope="row" align="left"> {row.jobTitle} </TableCell>
+                        <TableCell align="left">{row.employerName}</TableCell>
+                        <TableCell align="right">{row.wage}</TableCell>
+                      </TableRow>
+                    );
+              })
+            }
+            {/* don't need this since we are not  */}
+            {/* {emptyRows > 0 && (
+              <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )} */}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {formattedResult.length > 0 && (<TablePagination
+        rowsPerPageOptions={[LESS_ROWS, MID_ROWS, MORE_ROWS]}
+        component="div"
+        count={formattedResult.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />)}
+    </Paper>
   );
 }
 

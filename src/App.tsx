@@ -42,7 +42,6 @@ class App extends Component {
     fetch('/getRecordByCompanyName?' + new URLSearchParams({ name }))
       .then(res => res.json())
       .then(searchResult => {
-        console.log(searchResult);
         return this.setState({ searchResult })
       });
   }
