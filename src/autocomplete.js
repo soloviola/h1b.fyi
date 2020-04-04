@@ -1,25 +1,20 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import ListboxComponent from './Listbox';
 import { Typography } from '@material-ui/core';
 
-import Autocomplete, { RenderGroupParams } from '@material-ui/lab/Autocomplete';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
-const Automcomplete = (
-  params: { 
-    companyNames: Array<string>, 
-    onNameSearchChange: (event: ChangeEvent<{}>, val: any) => any 
-  }) => {
-
+const Automcomplete = (params) => {
   return (
     <Autocomplete 
       id="company-name-box"
       size="small"
       openOnFocus
       disableListWrap
-      ListboxComponent={ListboxComponent as React.ComponentType<React.HTMLAttributes<HTMLElement>>}
-      renderGroup={(params: RenderGroupParams) => [
+      ListboxComponent={ListboxComponent}
+      renderGroup={(params) => [
         <ListSubheader key={params.key} component="div">
           {params.key}
         </ListSubheader>,
@@ -31,6 +26,12 @@ const Automcomplete = (
       renderInput={(params) => <TextField {...params} label="Company Name" variant="outlined" />}
       renderOption={(option) => <Typography noWrap>{option}</Typography>}
       onChange={params.onNameSearchChange}
+      renderInput={
+        ({ inputProps, ...params}) => {
+        inputProps.autocomplete = 'new-password'
+        return <TextField {...params} label="Company Name" variant="outlined" inputProps={inputProps} />
+      }
+      }
     />
   );
 }

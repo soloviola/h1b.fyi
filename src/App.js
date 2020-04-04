@@ -91,8 +91,13 @@ class App extends Component {
                     selectOnFocus
                     options={MAJOR_CITIES}
                     getOptionLabel={option => option}
-                    onChange={this.onCityChange}
-                    renderInput={(params) => <TextField {...params} label="City" variant="outlined" />}
+                    onInputChange={this.onCityChange}
+                    renderInput={
+                      ({ inputProps, ...params}) => {
+                        inputProps.autocomplete = 'new-password'
+                      return <TextField {...params} label="City" variant="outlined" inputProps={inputProps} />
+                    }
+                    }
                   />
                 {/* </form> */}
               </Grid>
@@ -103,8 +108,13 @@ class App extends Component {
                     selectOnFocus
                     options={STATES}
                     getOptionLabel={option => option}
-                    onChange={this.onStateChange}
-                    renderInput={(params) => <TextField {...params} label="State" variant="outlined" />}
+                    onInputChange={this.onStateChange}
+                    renderInput={
+                      ({ inputProps, ...params}) => {
+                        inputProps.autocomplete = 'new-password'
+                      return <TextField {...params} label="State" variant="outlined" inputProps={inputProps} />
+                    }
+                    }
                   />
                 {/* </form> */}
               </Grid>
@@ -116,8 +126,13 @@ class App extends Component {
                     selectOnFocus
                     options={STATES}
                     getOptionLabel={option => option}
-                    onChange={this.onTitleChange}
-                    renderInput={(params) => <TextField {...params} label="Title" variant="outlined" />}
+                    onInputChange={this.onTitleChange}
+                    renderInput={
+                      ({ inputProps, ...params}) => {
+                        inputProps.autocomplete = 'new-password'
+                      return <TextField {...params} label="Title" variant="outlined" inputProps={inputProps} />
+                    }
+                    }
                   />
                 {/* </form> */}
               </Grid>
