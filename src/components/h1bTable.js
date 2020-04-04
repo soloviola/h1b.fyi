@@ -1,7 +1,7 @@
-import React, { Component, forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
-import { COLUMN_INDEX } from './Consts';
+import { COLUMN_INDEX } from '../Consts';
 import MaterialTable from 'material-table';
 
 import AddBox from '@material-ui/icons/AddBox';
@@ -19,17 +19,17 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import TextField from '@material-ui/core/TextField';
 
 import {
   createStyles,
-  makeStyles,
-  Theme
+  makeStyles
 } from "@material-ui/core/styles";
 
 const tableColumns = [
-  { field: "jobTitle", title: "Job Title" },
   { field: "employerName", title: "Company Name" },
+  { field: "jobTitle", title: "Job Title" },
+  { field: "city", title: "City" },
+  { field: "state", title: "State" },
   { field: "wage", title: "Wage" }
 ];
 
@@ -79,6 +79,8 @@ const H1bTable = (params) => {
     return {
       jobTitle: item[COLUMN_INDEX["JOB_TITLE"]],
       employerName: item[COLUMN_INDEX['EMPLOYER_NAME']],
+      city: item[COLUMN_INDEX["WORKSITE_CITY_1"]],
+      state: item[COLUMN_INDEX["WORKSITE_STATE_1"]],
       wage
     }
   })

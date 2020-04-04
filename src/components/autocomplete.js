@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import ListboxComponent from './Listbox';
+import ListboxComponent from './listbox';
 import { Typography } from '@material-ui/core';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
