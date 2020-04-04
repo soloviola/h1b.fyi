@@ -17,7 +17,6 @@ const Automcomplete = (
       id="company-name-box"
       size="small"
       openOnFocus
-      style={{ width: 300 }}
       disableListWrap
       ListboxComponent={ListboxComponent as React.ComponentType<React.HTMLAttributes<HTMLElement>>}
       renderGroup={(params: RenderGroupParams) => [
