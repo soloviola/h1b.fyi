@@ -78,7 +78,7 @@ const H1bTable = (params) => {
     else {
       wage = item[COLUMN_INDEX['PREVAILING_WAGE_1']]
     }
-    if (item[COLUMN_INDEX['WAGE_UNIT_OF_PAY_1']] == 'Hour') {
+    if (item[COLUMN_INDEX['WAGE_UNIT_OF_PAY_1']] === 'Hour') {
       wage = -1
     }
     return {

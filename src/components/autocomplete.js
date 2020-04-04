@@ -23,7 +23,6 @@ const Automcomplete = (params) => {
       options={params.companyNames}
       groupBy={(option) => option[0].toUpperCase()}
       getOptionLabel={option => option}
-      renderInput={(params) => <TextField {...params} label="Company Name" variant="outlined" />}
       renderOption={(option) => <Typography noWrap>{option}</Typography>}
       onChange={params.onNameSearchChange}
       renderInput={

@@ -20,7 +20,7 @@ class App extends Component {
       .then(res => res.json())
       .then(companyNames => { 
         companyNames = companyNames.filter((name) => {
-          if (!name || name.length == 0) {
+          if (!name || name.length === 0) {
             return false
           }
           if (typeof name[0] == "string" && name[0].length > 0) {
