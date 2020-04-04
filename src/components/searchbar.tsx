@@ -7,7 +7,6 @@ import Button from '@material-ui/core/Button';
 import { STATES, MAJOR_CITIES, JOB_TITLES } from '../Consts';
 
 const Searchbar = (params: any) => {
-  console.log(params)
   return (
     <Grid container spacing={1}>
       <Grid item xs={3}>
