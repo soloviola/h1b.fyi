@@ -11,7 +11,8 @@ class App extends Component {
     searchCompanyName: "",
     searchCompanyState: "",
     searchCompanyCity: "",
-    searchTitle: ""
+    searchTitle: "",
+    querying: false
   }
 
   componentDidMount() {
@@ -47,19 +48,19 @@ class App extends Component {
     this.setState({searchTitle: val || ""})
   }
   searchByCriteria = () => {
+    this.setState({querying: true})
     const searchParams = {
       companyName: this.state.searchCompanyName,
       state: this.state.searchCompanyState,
       city: this.state.searchCompanyCity,
       title: this.state.searchTitle
     }
-    console.log(searchParams)
     fetch('/getRecordsByCriteria?' + new URLSearchParams(searchParams))
       .then(res => res.json())
       .then(searchResult => {
-        console.log(searchResult)
-        return this.setState({ searchResult })
+        this.setState({ searchResult, querying: false })
       });
+
   }
 
   render() {
@@ -76,8 +77,11 @@ class App extends Component {
               onCityChange={this.onCityChange}
               onStateChange={this.onStateChange}
               onTitleChange={this.onTitleChange}
-              searchByCriteria={this.searchByCriteria}/>
-            <H1bTable searchResult={this.state.searchResult} />
+              searchByCriteria={this.searchByCriteria}
+              querying={this.state.querying}/>
+            <H1bTable 
+              searchResult={this.state.searchResult} 
+              querying={this.state.querying}/>
           </Grid>
           <Grid item xs >
           </Grid>

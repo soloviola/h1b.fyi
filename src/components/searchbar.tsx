@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import { STATES, MAJOR_CITIES, JOB_TITLES } from '../Consts';
 
 const Searchbar = (params: any) => {
+  console.log(params)
   return (
     <Grid container spacing={1}>
       <Grid item xs={3}>
@@ -63,7 +64,12 @@ const Searchbar = (params: any) => {
           />
       </Grid>
       <Grid item xs={1}>
-        <Button variant="contained" color="primary" onClick={params.searchByCriteria}> Search </Button>
+        <Button 
+          variant="contained" 
+          color="primary" 
+          onClick={params.searchByCriteria}
+          disabled={params.querying}
+          > Search </Button>
       </Grid>
     </Grid>
   );
