@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import ListSubheader from '@material-ui/core/ListSubheader';
-import ListboxComponent from './Listbox';
+import ListboxComponent from './listbox';
 import { Typography } from '@material-ui/core';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -23,7 +23,6 @@ const Automcomplete = (params) => {
       options={params.companyNames}
       groupBy={(option) => option[0].toUpperCase()}
       getOptionLabel={option => option}
-      renderInput={(params) => <TextField {...params} label="Company Name" variant="outlined" />}
       renderOption={(option) => <Typography noWrap>{option}</Typography>}
       onChange={params.onNameSearchChange}
       renderInput={

@@ -1,12 +1,8 @@
-import React, { Component, ChangeEvent } from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import CompanyAutoComplete from './autocomplete';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import TextField from '@material-ui/core/TextField';
-import H1bTable from './h1bTable';
-import { STATES, MAJOR_CITIES } from './Consts';
+import Searchbar from './components/searchbar';
+import H1bTable from './components/h1bTable';
 
 class App extends Component {
   state = {
@@ -15,7 +11,8 @@ class App extends Component {
     searchCompanyName: "",
     searchCompanyState: "",
     searchCompanyCity: "",
-    searchTitle: ""
+    searchTitle: "",
+    querying: false
   }
 
   componentDidMount() {
@@ -23,7 +20,7 @@ class App extends Component {
       .then(res => res.json())
       .then(companyNames => { 
         companyNames = companyNames.filter((name) => {
-          if (!name || name.length == 0) {
+          if (!name || name.length === 0) {
             return false
           }
           if (typeof name[0] == "string" && name[0].length > 0) {
@@ -51,19 +48,19 @@ class App extends Component {
     this.setState({searchTitle: val || ""})
   }
   searchByCriteria = () => {
+    this.setState({querying: true})
     const searchParams = {
       companyName: this.state.searchCompanyName,
       state: this.state.searchCompanyState,
       city: this.state.searchCompanyCity,
       title: this.state.searchTitle
     }
-    console.log(searchParams)
     fetch('/getRecordsByCriteria?' + new URLSearchParams(searchParams))
       .then(res => res.json())
       .then(searchResult => {
-        console.log(searchResult)
-        return this.setState({ searchResult })
+        this.setState({ searchResult, querying: false })
       });
+
   }
 
   render() {
@@ -74,73 +71,17 @@ class App extends Component {
           <Grid item xs >
           </Grid>
           <Grid item xs={10}>
-            <Grid container spacing={1}>
-              <Grid item xs={3}>
-                {/* <form noValidate autoComplete="off"> */}
-                  <CompanyAutoComplete 
-                    companyNames={this.state.companyNames}
-                    onNameSearchChange={this.onNameSearchChange}
-                  />
-                  {/* </form> */}
-              </Grid>
-              <Grid item xs={3}>
-                 {/* <form noValidate autoComplete="off"> */}
-                  <Autocomplete
-                    size="small"
-                    freeSolo
-                    selectOnFocus
-                    options={MAJOR_CITIES}
-                    getOptionLabel={option => option}
-                    onInputChange={this.onCityChange}
-                    renderInput={
-                      ({ inputProps, ...params}) => {
-                        inputProps.autocomplete = 'new-password'
-                      return <TextField {...params} label="City" variant="outlined" inputProps={inputProps} />
-                    }
-                    }
-                  />
-                {/* </form> */}
-              </Grid>
-              <Grid item xs={2}>
-                {/* <form noValidate autoComplete="off"> */}
-                  <Autocomplete
-                    size="small"
-                    selectOnFocus
-                    options={STATES}
-                    getOptionLabel={option => option}
-                    onInputChange={this.onStateChange}
-                    renderInput={
-                      ({ inputProps, ...params}) => {
-                        inputProps.autocomplete = 'new-password'
-                      return <TextField {...params} label="State" variant="outlined" inputProps={inputProps} />
-                    }
-                    }
-                  />
-                {/* </form> */}
-              </Grid>
-              <Grid item xs={3}>
-                {/* <form noValidate autoComplete="off"> */}
-                  <Autocomplete
-                    size="small"
-                    freeSolo
-                    selectOnFocus
-                    options={STATES}
-                    getOptionLabel={option => option}
-                    onInputChange={this.onTitleChange}
-                    renderInput={
-                      ({ inputProps, ...params}) => {
-                        inputProps.autocomplete = 'new-password'
-                      return <TextField {...params} label="Title" variant="outlined" inputProps={inputProps} />
-                    }
-                    }
-                  />
-                {/* </form> */}
-              </Grid>
-              <Grid item xs={1}>
-                <Button variant="contained" color="primary" onClick={this.searchByCriteria}> Search </Button>
-              </Grid>
-            </Grid>
-            <H1bTable searchResult={this.state.searchResult} />
+            <Searchbar 
+              companyNames={this.state.companyNames} 
+              onNameSearchChange={this.onNameSearchChange}
+              onCityChange={this.onCityChange}
+              onStateChange={this.onStateChange}
+              onTitleChange={this.onTitleChange}
+              searchByCriteria={this.searchByCriteria}
+              querying={this.state.querying}/>
+            <H1bTable 
+              searchResult={this.state.searchResult} 
+              querying={this.state.querying}/>
           </Grid>
           <Grid item xs >
           </Grid>
