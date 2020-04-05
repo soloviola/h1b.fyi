@@ -11,8 +11,8 @@ const Automcomplete = (params) => {
     <Autocomplete 
       id="company-name-box"
       size="small"
-      openOnFocus
       disableListWrap
+      openOnFocus={false}
       ListboxComponent={ListboxComponent}
       renderGroup={(params) => [
         <ListSubheader key={params.key} component="div">

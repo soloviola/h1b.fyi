@@ -10,12 +10,6 @@ const Searchbar = (params: any) => {
   return (
     <Grid container spacing={1}>
       <Grid item xs={3}>
-          <CompanyAutoComplete 
-            companyNames={params.companyNames}
-            onNameSearchChange={params.onNameSearchChange}
-          />
-      </Grid>
-      <Grid item xs={3}>
           <Autocomplete
             size="small"
             freeSolo
@@ -26,9 +20,15 @@ const Searchbar = (params: any) => {
             renderInput={
               ({ inputProps, ...params}) => {
                 (inputProps as any).autocomplete = 'new-password'
-              return <TextField {...params} label="Job Title" variant="outlined" inputProps={inputProps} />
+              return <TextField {...params} autoFocus label="Job Title" variant="outlined" inputProps={inputProps} />
             }
             }
+          />
+      </Grid>
+      <Grid item xs={3}>
+          <CompanyAutoComplete 
+            companyNames={params.companyNames}
+            onNameSearchChange={params.onNameSearchChange}
           />
       </Grid>
       <Grid item xs={3}>
