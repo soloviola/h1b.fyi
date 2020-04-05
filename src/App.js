@@ -70,7 +70,7 @@ class App extends Component {
         <Grid container spacing={3}>
           <Grid item xs >
           </Grid>
-          <Grid item xs={10}>
+          <Grid item xl={10} xs={10}>
             <Searchbar 
               companyNames={this.state.companyNames} 
               onNameSearchChange={this.onNameSearchChange}
