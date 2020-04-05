@@ -11,7 +11,7 @@ const Searchbar = (params: any) => {
   return (
     <Grid container spacing={1}>
       <Grid container spacing={1}>
-        <Grid item xl={3} xs={12}>
+        <Grid item md={3} sm={12} xs={12}>
             <Autocomplete
               size="small"
               freeSolo
@@ -27,13 +27,13 @@ const Searchbar = (params: any) => {
               }
             />
         </Grid>
-        <Grid item xl={3} xs={12}>
+        <Grid item md={3} sm={12} xs={12}>
             <CompanyAutoComplete 
               companyNames={params.companyNames}
               onNameSearchChange={params.onNameSearchChange}
             />
         </Grid>
-        <Grid item xl={3} xs={12}>
+        <Grid item md={3} sm={12} xs={12}>
             <Autocomplete
               size="small"
               freeSolo
@@ -49,7 +49,7 @@ const Searchbar = (params: any) => {
               }
             />
         </Grid>
-        <Grid item xl={3} xs={12}>
+        <Grid item md={3} sm={12} xs={12}>
             <Autocomplete
               size="small"
               selectOnFocus
