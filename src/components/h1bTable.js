@@ -29,6 +29,7 @@ import {
 const tableColumns = [
   { field: "jobTitle", title: "Job Title", cellStyle: { width: "27%" }, headerStyle: { width: "27%" }},
   { field: "employerName", title: "Company Name", cellStyle: { width: "27%" }, headerStyle: { width: "27%" }},
+  { field: "caseDate", title: "Case Date", cellStyle: { width: "27%" }, headerStyle: { width: "27%" }},
   { field: "city", title: "City", cellStyle: { width: "7%" }, headerStyle: { width: "7%" }},
   { field: "state", title: "State", cellStyle: { width: "7%" }, headerStyle: { width: "7%" }},
   { field: "wage", title: "Wage", type: 'numeric',cellStyle: { minWidth: "250" }, headerStyle: { minWidth: "250" }}
@@ -84,6 +85,7 @@ const H1bTable = (params) => {
     return {
       jobTitle: item[COLUMN_INDEX["JOB_TITLE"]],
       employerName: item[COLUMN_INDEX['EMPLOYER_NAME']],
+      caseDate: (new Date(item[COLUMN_INDEX["CASE_SUBMITTED"]])).toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }),
       city: item[COLUMN_INDEX["WORKSITE_CITY_1"]],
       state: item[COLUMN_INDEX["WORKSITE_STATE_1"]],
       wage
