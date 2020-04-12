@@ -1,11 +1,11 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
-import CompanyAutoComplete from './autocomplete';
+import VisualizedAutoComplete from './autocomplete';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import { STATES, MAJOR_CITIES, JOB_TITLES } from '../Consts';
+import { STATES, JOB_TITLES } from '../Consts';
 
 const Searchbar = (params: any) => {
   return (
@@ -23,31 +23,22 @@ const Searchbar = (params: any) => {
                 ({ inputProps, ...params}) => {
                   (inputProps as any).autocomplete = 'new-password'
                 return <TextField {...params} autoFocus label="Job Title" variant="outlined" inputProps={inputProps} />
-              }
-              }
+              }}
             />
         </Grid>
         <Grid item md={3} sm={12} xs={12}>
-            <CompanyAutoComplete 
-              companyNames={params.companyNames}
+            <VisualizedAutoComplete 
+              labelName={"Company"}
+              options={params.companyNames}
               onNameSearchChange={params.onNameSearchChange}
             />
         </Grid>
         <Grid item md={3} sm={12} xs={12}>
-            <Autocomplete
-              size="small"
-              freeSolo
-              selectOnFocus
-              options={MAJOR_CITIES}
-              getOptionLabel={option => option}
-              onInputChange={params.onCityChange}
-              renderInput={
-                ({ inputProps, ...params}) => {
-                  (inputProps as any).autocomplete = 'new-password'
-                return <TextField {...params} label="City" variant="outlined" inputProps={inputProps} />
-              }
-              }
-            />
+          <VisualizedAutoComplete 
+            labelName={"City"}
+            options={params.cityNames}
+            onNameSearchChange={params.onCityChange}
+          />
         </Grid>
         <Grid item md={3} sm={12} xs={12}>
             <Autocomplete

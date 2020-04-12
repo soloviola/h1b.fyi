@@ -20,15 +20,14 @@ const Automcomplete = (params) => {
         </ListSubheader>,
         params.children,
       ]}
-      options={params.companyNames}
-      groupBy={(option) => option[0].toUpperCase()}
+      options={params.options}
       getOptionLabel={option => option}
       renderOption={(option) => <Typography noWrap>{option}</Typography>}
       onChange={params.onNameSearchChange}
       renderInput={
-        ({ inputProps, ...params}) => {
+        ({ inputProps, ...ps}) => {
         inputProps.autocomplete = 'new-password'
-        return <TextField {...params} label="Company Name" variant="outlined" inputProps={inputProps} />
+        return <TextField {...ps} label={params.labelName} variant="outlined" inputProps={inputProps} />
       }
       }
     />
