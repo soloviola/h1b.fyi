@@ -7,6 +7,7 @@ import H1bTable from './components/h1bTable';
 class App extends Component {
   state = {
     companyNames: [],
+    cityNames: [],
     searchResult: [],
     searchCompanyName: "",
     searchCompanyState: "",
@@ -18,21 +19,27 @@ class App extends Component {
   componentDidMount() {
     fetch('/getCompanyNames')
       .then(res => res.json())
-      .then(companyNames => { 
-        companyNames = companyNames.filter((name) => {
-          if (!name || name.length === 0) {
-            return false
-          }
-          if (typeof name[0] == "string" && name[0].length > 0) {
-            return true
-          }
-          return false
-        }).map((name) => {
-            return name[0]
-        }).sort((a, b) => a.toUpperCase().localeCompare(b.toUpperCase()));
-        this.setState({ companyNames })
-        console.log('mounted')
+      .then(companyNames => {
+        this.setState({ "companyNames": this.parseResult(companyNames)})
       });
+    fetch('/getCityNames')
+      .then(res => res.json())
+      .then(cityNames => {
+        this.setState({ "cityNames": this.parseResult(cityNames) })
+      });
+  }
+
+  parseResult = (results) => {
+    results = results.filter((name) => {
+      if (!name || name.length === 0) {
+        return false
+      }
+      if (typeof name[0] === "string" && name[0].length > 0) {
+        return true
+      }
+      return false
+    })
+    return results
   }
 
   onNameSearchChange = (event, val) => {
@@ -60,7 +67,6 @@ class App extends Component {
       .then(searchResult => {
         this.setState({ searchResult, querying: false })
       });
-
   }
 
   render() {
@@ -70,9 +76,10 @@ class App extends Component {
         <Grid container spacing={3}>
           <Grid item xs >
           </Grid>
-          <Grid item xl={10} xs={10}>
+          <Grid item xl={8} xs={8}>
             <Searchbar 
               companyNames={this.state.companyNames} 
+              cityNames={this.state.cityNames}
               onNameSearchChange={this.onNameSearchChange}
               onCityChange={this.onCityChange}
               onStateChange={this.onStateChange}
