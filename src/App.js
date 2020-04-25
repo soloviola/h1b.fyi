@@ -65,6 +65,7 @@ class App extends Component {
     fetch('/getRecordsByCriteria?' + new URLSearchParams(searchParams))
       .then(res => res.json())
       .then(searchResult => {
+        console.log("results = ", searchResult.length)
         this.setState({ searchResult, querying: false })
       });
   }
